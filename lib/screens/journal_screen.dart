@@ -145,64 +145,77 @@ class _JournalScreenState extends State<JournalScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Journal"),
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("Journal"),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          // Entry area can scroll when the keyboard reduces
+          // the available screen height.
+          Flexible(
+            fit: FlexFit.loose,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const JournalHeader(),
+
+                  const SizedBox(height: 20),
+
+                  MoodSelector(
+                    selectedMood: selectedMood,
+                    onChanged: (mood) {
+                      setState(() {
+                        selectedMood = mood;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  JournalInputCard(
+                    controller: _controller,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  PrimaryButton(
+                    text: isSaving ? "Saving..." : "Save Entry",
+                    icon: isSaving
+                        ? Icons.hourglass_top
+                        : Icons.book,
+                    onPressed: () {
+                      if (!isSaving) {
+                        saveEntry();
+                      }
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+
+          // Saved journal entries remain independently scrollable.
+          Expanded(
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : JournalList(
+                    entries: entries,
+                    onDelete: deleteEntry,
+                  ),
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const JournalHeader(),
-
-            const SizedBox(height: 20),
-
-            MoodSelector(
-              selectedMood: selectedMood,
-              onChanged: (mood) {
-                setState(() {
-                  selectedMood = mood;
-                });
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            JournalInputCard(
-              controller: _controller,
-            ),
-
-            const SizedBox(height: 20),
-
-            PrimaryButton(
-              text: isSaving ? "Saving..." : "Save Entry",
-              icon: isSaving
-                  ? Icons.hourglass_top
-                  : Icons.book,
-              onPressed: () {
-                if (!isSaving) {
-                  saveEntry();
-                }
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            Expanded(
-              child: isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : JournalList(
-                      entries: entries,
-                      onDelete: deleteEntry,
-                    ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
+}
+ 
