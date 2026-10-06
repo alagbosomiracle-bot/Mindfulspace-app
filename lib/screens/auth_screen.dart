@@ -3,7 +3,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../theme/app_colors.dart';
 import '../constants/app_sizes.dart';
-import 'home_screen.dart';
 import '../main.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -24,77 +23,87 @@ class _AuthScreenState extends State<AuthScreen> {
 
   final supabase = Supabase.instance.client;
 
- Future<void> authenticate() async {
-  if (mounted) {
-    setState(() => loading = true);
-  }
+  Future<void> authenticate() async {
+    if (mounted) {
+      setState(() => loading = true);
+    }
 
-try {
-  print("Starting authentication...");
+    try {
+      debugPrint("Starting authentication...");
 
-  if (isLogin) {
-    print("Logging in...");
+      if (isLogin) {
+        debugPrint("Logging in...");
 
-    final response = await supabase.auth.signInWithPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+        final response = await supabase.auth.signInWithPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
 
-    print(response.user);
-  } else {
-    print("Creating account...");
+        debugPrint("Logged-in user: ${response.user?.id}");
+      } else {
+        debugPrint("Creating account...");
 
-    final response = await supabase.auth.signUp(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-      data: {
-        'name': nameController.text.trim(),
-      },
-    );
+        final response = await supabase.auth.signUp(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+          data: {
+            'name': nameController.text.trim(),
+          },
+        );
 
-    print(response.user);
+        debugPrint("Created user: ${response.user?.id}");
 
-    if (response.user != null) {
-      print("Saving profile...");
+        if (response.user != null) {
+          debugPrint("Saving profile...");
 
-      await supabase.from('profiles').upsert({
-        'id': response.user!.id,
-        'name': nameController.text.trim(),
-        'email': emailController.text.trim(),
-      });
+          await supabase.from('profiles').upsert({
+            'id': response.user!.id,
+            'name': nameController.text.trim(),
+            'email': emailController.text.trim(),
+          });
 
-      print("Profile saved.");
+          debugPrint("Profile saved.");
+        }
+      }
+
+      debugPrint("Authentication successful.");
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AuthGate(),
+        ),
+      );
+    } catch (e, stack) {
+      debugPrint("Authentication error: $e");
+      debugPrint("$stack");
+
+      if (mounted) {
+        showMessage(e.toString());
+      }
+    }
+
+    if (mounted) {
+      setState(() => loading = false);
     }
   }
 
-  print("Authentication successful.");
-
-  if (!mounted) return;
-
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const AuthGate(),
-    ),
-  );
-}
-catch (e, stack) {
-  print(e);
-  print(stack);
-
-  showMessage(e.toString());
-}
-
-  if (mounted) {
-    setState(() => loading = false);
-  }
-}
-      
-
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        content: Text(message),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -108,19 +117,22 @@ catch (e, stack) {
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSizes.screenPadding),
+              padding: const EdgeInsets.all(
+                AppSizes.screenPadding,
+              ),
               child: Card(
                 elevation: 12,
                 shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(AppSizes.cardRadius),
+                  borderRadius: BorderRadius.circular(
+                    AppSizes.cardRadius,
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.stretch,
                     children: [
-
                       const Icon(
                         Icons.self_improvement,
                         size: 75,
@@ -157,7 +169,9 @@ catch (e, stack) {
                           controller: nameController,
                           decoration: const InputDecoration(
                             labelText: "Full Name",
-                            prefixIcon: Icon(Icons.person_outline),
+                            prefixIcon: Icon(
+                              Icons.person_outline,
+                            ),
                           ),
                         ),
 
@@ -168,7 +182,9 @@ catch (e, stack) {
                         controller: emailController,
                         decoration: const InputDecoration(
                           labelText: "Email",
-                          prefixIcon: Icon(Icons.email_outlined),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                          ),
                         ),
                       ),
 
@@ -179,8 +195,9 @@ catch (e, stack) {
                         obscureText: obscurePassword,
                         decoration: InputDecoration(
                           labelText: "Password",
-                          prefixIcon:
-                              const Icon(Icons.lock_outline),
+                          prefixIcon: const Icon(
+                            Icons.lock_outline,
+                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               obscurePassword
@@ -200,14 +217,12 @@ catch (e, stack) {
                       const SizedBox(height: 30),
 
                       ElevatedButton(
-                        onPressed:
-                            loading ? null : authenticate,
+                        onPressed: loading ? null : authenticate,
                         child: loading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,
-                                child:
-                                    CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   color: Colors.white,
                                 ),

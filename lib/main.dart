@@ -17,11 +17,11 @@ Future<void> main() async {
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6a2x2dXlna3dqanJjdGVuanRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTkwMDUsImV4cCI6MjA5NDc5NTAwNX0.-FH08jaU8tTKrt6I5d0UT-XmAolyn8L7nI_K3epcAB4',
   );
 
-  runApp(MindfulSpaceApp());
+  runApp(const MindfulSpaceApp());
 }
 
 class MindfulSpaceApp extends StatefulWidget {
-  MindfulSpaceApp({super.key});
+ const MindfulSpaceApp({super.key});
 
   @override
   State<MindfulSpaceApp> createState() => _MindfulSpaceAppState();

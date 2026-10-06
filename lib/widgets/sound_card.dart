@@ -38,8 +38,8 @@ class SoundCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isPlaying
-                ? Colors.purple.withOpacity(.25)
-                : Colors.black.withOpacity(.05),
+                ? Colors.purple.withValues(alpha: .25)
+                : Colors.black.withValues(alpha: .05),
             blurRadius: isPlaying ? 20 : 12,
             offset: const Offset(0, 6),
           ),

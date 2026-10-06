@@ -23,7 +23,7 @@ class WellnessCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.05),
+            color: Colors.black.withValues(alpha: .05),
             blurRadius: 18,
             offset: const Offset(0, 8),
           )
@@ -34,7 +34,7 @@ class WellnessCard extends StatelessWidget {
 
           CircleAvatar(
             radius: 26,
-            backgroundColor: color.withOpacity(.15),
+            backgroundColor: color.withValues(alpha: .15),
             child: Icon(icon, color: color),
           ),
 
