@@ -9,9 +9,7 @@ class BreathingCircle extends StatefulWidget {
 
 class _BreathingCircleState extends State<BreathingCircle>
     with SingleTickerProviderStateMixin {
-
   late AnimationController controller;
-
   late Animation<double> animation;
 
   @override
@@ -24,8 +22,8 @@ class _BreathingCircleState extends State<BreathingCircle>
     );
 
     animation = Tween<double>(
-      begin: 180,
-      end: 250,
+      begin: 155,
+      end: 205,
     ).animate(
       CurvedAnimation(
         parent: controller,
@@ -44,30 +42,44 @@ class _BreathingCircleState extends State<BreathingCircle>
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedBuilder(
       animation: animation,
       builder: (_, child) {
-
         return Container(
-          width: animation.value,
-          height: animation.value,
-
+          width: animation.value + 28,
+          height: animation.value + 28,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Colors.green.shade200,
-                Colors.teal.shade300,
-              ],
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF7E8CE0).withValues(alpha: 0.18),
+                blurRadius: 30,
+                spreadRadius: 8,
+              ),
+            ],
           ),
-
-          child: const Center(
-            child: Icon(
-              Icons.self_improvement,
-              color: Colors.white,
-              size: 55,
+          child: Center(
+            child: Container(
+              width: animation.value,
+              height: animation.value,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF9D9FE8),
+                    Color(0xFF79C9BD),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.self_improvement_rounded,
+                  color: Colors.white,
+                  size: 52,
+                ),
+              ),
             ),
           ),
         );

@@ -20,75 +20,89 @@ class SoundCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeOut,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(22),
         gradient: isPlaying
             ? const LinearGradient(
                 colors: [
-                  Color(0xFF8EC5FC),
-                  Color(0xFFE0C3FC),
+                  Color(0xFF8587D8),
+                  Color(0xFF79BEB5),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               )
             : null,
         color: isPlaying ? null : Colors.white,
+        border: Border.all(
+          color: isPlaying
+              ? Colors.transparent
+              : Colors.black.withValues(alpha: 0.04),
+        ),
         boxShadow: [
           BoxShadow(
             color: isPlaying
-                ? Colors.purple.withValues(alpha: .25)
-                : Colors.black.withValues(alpha: .05),
-            blurRadius: isPlaying ? 20 : 12,
-            offset: const Offset(0, 6),
+                ? const Color(0xFF8587D8)
+                    .withValues(alpha: 0.22)
+                : Colors.black.withValues(alpha: 0.035),
+            blurRadius: isPlaying ? 18 : 12,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(22),
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 15,
+            ),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: isPlaying
-                      ? Colors.white
-                      : Colors.green.shade100,
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isPlaying
+                        ? Colors.white.withValues(alpha: 0.95)
+                        : const Color(0xFFEAF4EF),
+                  ),
                   child: Icon(
                     icon,
                     color: isPlaying
-                        ? Colors.deepPurple
-                        : Colors.green,
+                        ? const Color(0xFF6869B9)
+                        : const Color(0xFF4F8B72),
                   ),
                 ),
 
-                const SizedBox(width: 18),
+                const SizedBox(width: 15),
 
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
                           color: isPlaying
                               ? Colors.white
-                              : Colors.black87,
+                              : const Color(0xFF292632),
                         ),
                       ),
-
                       const SizedBox(height: 4),
-
                       Text(
                         subtitle,
                         style: TextStyle(
+                          fontSize: 13,
                           color: isPlaying
                               ? Colors.white70
                               : Colors.grey.shade600,
@@ -98,17 +112,19 @@ class SoundCard extends StatelessWidget {
                   ),
                 ),
 
+                const SizedBox(width: 8),
+
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 250),
                   child: Icon(
                     isPlaying
-                        ? Icons.pause_circle_filled
-                        : Icons.play_circle_fill,
+                        ? Icons.pause_circle_filled_rounded
+                        : Icons.play_circle_fill_rounded,
                     key: ValueKey(isPlaying),
-                    size: 42,
+                    size: 38,
                     color: isPlaying
                         ? Colors.white
-                        : Colors.green,
+                        : const Color(0xFF6D70C7),
                   ),
                 ),
               ],
@@ -116,6 +132,8 @@ class SoundCard extends StatelessWidget {
           ),
         ),
       ),
-    ).animate().fadeIn(duration: 500.ms).slideX(begin: .15);
+    ).animate().fadeIn(
+          duration: 400.ms,
+        );
   }
 }

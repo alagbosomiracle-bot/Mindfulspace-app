@@ -5,32 +5,25 @@ class MeditationHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-
-        SizedBox(height: 20),
-
         Text(
           "Take a deep breath.",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
         ),
-
-        SizedBox(height: 10),
-
+        const SizedBox(height: 8),
         Text(
           "Nothing needs your attention right now.",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.grey.shade600,
+                height: 1.4,
+              ),
         ),
-
-        SizedBox(height: 40),
-
+        const SizedBox(height: 20),
       ],
     );
   }
